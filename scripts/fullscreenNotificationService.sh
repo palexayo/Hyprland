@@ -6,7 +6,6 @@ PIPE="$HOME/.config/hypr/pipes/fullscreen_pipe"
 [ -p "$PIPE" ] && rm "$PIPE"
 mkfifo "$PIPE"
 
-
 echo "Daemon started. Waiting for fullscreen events..."
 
 # Infinite loop
@@ -42,7 +41,7 @@ while true; do
             DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus" \
             notify-send "Your friendly daemon service" "You are in full screen mode but the new window has been created :)" -t 3000
         fi
-    else
+    elif [[ "$event" == "fullscreen" ]]; then
         workspacesInFs+=("$wsid")
     fi
     
