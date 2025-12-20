@@ -29,7 +29,9 @@ while true; do
         # Send Message when a new window gets created
         elif [[ "$event" == "newWindow" ]]; then
             echo "Display message"
-            DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus" \
+            monitor=$(hyprctl -j clients | jq -r --arg winid "$address" '.[] | select(.id==$winid) | .monitor') 
+            HYPRLAND_MONITOR="$monitor" \
+            DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus" \
             notify-send $'Your friendly daemon \U0001F608' \
             $'You are in full screen mode but the new window has been created :)' -t 3000
         # Window gets closed event handling
